@@ -21,6 +21,8 @@ The feature flag I implemented was to allow a specific user access to a delete b
 - Once the install is complete please enter `npm start` to get the application running
 - The application will open on `http://localhost:3000/` and bring you to a landing page prompting sign up or login
 - Sign in as each individual user (information above) and navigate to the `Goals` page in the Navbar to test each user's access
+    - the delete icon will be an `x` in the top right corner of each goal card depending on the user you are logged in as (screen shots below)
+- The SDK key does NOT need to be updated because it is generated dynamically through firebase auth & coincides with the user logged in    
 - Once you are logged in as a specific user, you must navigate to `Dashboard` in the Navbar to log out and re-sign in as the other user (by navigating to `Home` or `Login` in the Navbar)
 - To view the implemented code please navigate to `dollar-sense/client/src/komponent/Goal/Goal.js`, preview below
 
@@ -58,35 +60,17 @@ The feature flag I implemented was to allow a specific user access to a delete b
 
 ## Preview of User's View
 
-<img src="/assets/finnmail.png" />
+* `finn@mail.com` client view:
 
-## License
+![FinnScreenShot](/readme-assets/finnmail.png)
 
-Copyright (c) Natalie Finnegan, Charles Fisher, Javiann Marrero. All rights reserved.<br>
-Please be kind and change content if you wish to use this code.
+* `natfinn@mail.com` client view:
 
-<details><summary>Licensed under the MIT License</summary>
+![NatFinnScreenShot](/readme-assets/natfinn.png)
 
-Copyright (c) 2021 - present | Charles Fisher, Natalie Finnegan, Diego Villarreal
+* Feature Flag on LaunchDarkly platform
 
-<blockquote>
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+![FeatureFlag](/readme-assets/featureflag.png)
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
 
-</blockquote>
-</details>
