@@ -22,7 +22,7 @@ const Goals = ({ id, title, emoji, amount, saveBy, onDelete }) => {
       "key": `${auth.currentUser.email}`
     };
     const ldclient = LDClient.initialize('60f750d5b1a03d26078523a7', user);
-console.log(user)
+
     ldclient.on('ready', function() {
        
       var showFeature = ldclient.variation("allow-specific-users-access-to-delete-goal");
@@ -46,6 +46,7 @@ console.log(user)
 
   return (
     <div>
+      
       <Container className="d-flex align-items-center justify-content-center goalsPage">
         <Card className="goalsCard" style={{ maxWidth: "540px" }}>
           <Card.Body>

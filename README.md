@@ -4,121 +4,61 @@
 
 # dollarSense
 
-An app built on React to help young people learn financial literacy and budgeting.
-
-## Created by
-
-- [Natalie Finnegan](https://github.com/nfinnegan)
-- [Charles Fisher](https://github.com/cdfishe1)
-- [Javiann Marrero](https://github.com/javiistacks)
-
-## Table of Contents
-
-- [User Story](#user-story)
-- [dollarSense Demos](#dollarSense)
-- [Deployment](#deployment)
-- [Installation](#installation)
-- [Challenges and Successes](#challenges-and-successes)
-- [Directions for Future Development](#directions-for-future-development)
-- [Credits](#credits)
-- [Special Thanks](#special-thanks)
-- [License](#license)
-
-## User Story
-
-```
-As a user
-I want to be able to learn how to save money and invest money.
-So that, I can get familiar with real world responsibilities I will have as an adult.
-
-```
-
-## Acceptance Criteria
-
-```
-GIVEN a financial education website
-When I go to the application, I’m brought to the homepage and there will be an informational introduction of what our website is about.
-Then when I hit login I am prompted to enter my credentials, or if I select sign up I am presented with a signup form.
-Then once either is complete a user will be shows a “success” message
-Then when I am logged in or have successfully sign up, I am brought to my personal dashboard that shows me an overview of my achievements
-That dashboard will have 3 tabs or views for goal setting, budgeting, and investing.
-
-```
-
-## dollarSense Demos
-
-| ***Homepage***                                        | ***About Page***                                      |
-| :--------------------------------:                    | :-----------------------------------:                 |
-| <img src="./client/public/assets/homepage.png">       | <img src="./client/public/assets/aboutpage.png">      |
-
-| ***Learning Page***                                    | ***Budget Page***                                     |
-| :--------------------------------:                    | :-----------------------------------:                 |
-| <img src="./client/public/assets/learningpage.png">   | <img src="./client/public/assets/budgetpage.png">     | 
-
-| ***Goals Page***                                      | ***Dashboard Page***                                  |
-| :--------------------------------:                    | :-----------------------------------:                 |
-| <img src="./client/public/assets/goalspage.png">      | <img src="./client/public/assets/dashboardpage.png">  | 
+This was forked from a group project I worked on in order to implement a LaunchDarkly Feature Flag 
 
 
-### Screencast on wide screen
+## Feature Flag Created
 
-### Screencast on mobile
-![Screencast on mobile](./client/public/assets/video2.gif)
+The feature flag I implemented was to allow a specific user access to a delete button, while hiding it from another specified user
 
-## Deployment
-
-Site deployed at [dollarSense](https://dollar-sense.herokuapp.com/)
-
-## Installation
-
-This app uses the following dependencies:
-
-- [bootstrap](https://www.npmjs.com/package/bcrypt)
-- [chart.js](https://www.npmjs.com/package/chart.js)
-- [dotenv](https://www.npmjs.com/package/dotenv)
-- [emoji-picker-react](https://www.npmjs.com/package/emoji-picker-react)
-- [express](https://www.npmjs.com/package/express)
-- [firebase](https://www.npmjs.com/package/firebase)
-- [if-env](https://www.npmjs.com/package/if-env)
-- [mdb-react-ui-kit](https://www.npmjs.com/package/mdb-react-ui-kit)
-- [moment](https://www.npmjs.com/package/moment)
-- [mongoose](https://www.npmjs.com/package/mongoose)
-- [react](https://www.npmjs.com/package/react)
-- [react-chartjs-2](https://www.npmjs.com/package/react-chartjs-2)
-- [react-dom](https://www.npmjs.com/package/react-dom)
-- [react icons](https://www.npmjs.com/package/react-icons)
-- [react-moment](https://www.npmjs.com/package/react-moment)
-- [react-router-dom](https://www.npmjs.com/package/react-router-dom)
-- [react-script-tag](https://www.npmjs.com/package/react-script-tag)
-- [react-scripts](https://www.npmjs.com/package/react-scripts)
+- User with access to delete: `natfinn@mail.com`
+- User without access to delete: `finn@mail.com`
+- Password for both users is: `bubbles`
 
 ### Installation Instructions
 
-- In order to install this app please run npm install on the command line in node.js.
-- You can use the .env.EXAMPLE file to input your specific information for the working .env file.
-- If deploying to Heroku you will need to hook your MongoDB cluster to the webserver via Mongo Atlas.
+- Clone the repo to your local machine and do an `npm i` in your folder's terminal
+- Once the install is complete please enter `npm start` to get the application running
+- The application will open on `http://localhost:3000/` and bring you to a landing page prompting sign up or login
+- Sign in as each individual user (information above) and navigate to the `Goals` page in the Navbar to test each user's access
+- Once you are logged in as a specific user, you must navigate to `Dashboard` in the Navbar to log out and re-sign in as the other user (by navigating to `Home` or `Login` in the Navbar)
+- To view the implemented code please navigate to `dollar-sense/client/src/komponent/Goal/Goal.js`, preview below
 
-## Challenges and Successes
+    ```md
+        useEffect(() => {
+            var user = {
+            "key": `${auth.currentUser.email}`
+             };
+            const ldclient = LDClient.initialize('60f750d5b1a03d26078523a7', user);
 
-- Having components use external javascripts was a challenge. We used React Script Tag to overcome this.
-- Integrating Bootstrap into the React archiecture was sometimes challenging.
-- Working with the Date object in JS was challenging. When a user saved a date, it saved to the DB in Greenwich Mean Time (GMT), and it was difficult to format the dates to display how we wanted. After getting 50% through the issues, MomentJS was implemented to come to a quicker solution.
-- Responsiveness of images within Bootstrap cards were challenging at almost all levels of responsiveness. Ultimately left images for desktop/iPad views, but eliminated them on smaller views. 
-- There were issues with using the .env file to hide our API key. We used the file to hide a handful of other personal keys as it relates to our Firebase Auth implementation, but for some reason the API key could not be read. It had to be inserted directly into the file for the connection to Firebase to work.
-- Once a user signs up, there is a specific UID that Firebase assigns to the user. It was challenging to work through how to access the UID in the routes file in order to display the user specific budget/goals. Instead of doing it in the routes file, we ended up making our API calls within the component that alleviated the issue as well as passing that UID as a query parameter helped us achieve our goal.
-- Getting chart.js to was challenging. We needed to use react-chartjs-2 in order to wrap the components in a react friendly way.
-- We are proud to have built this entire site on React.
+        ldclient.on('ready', function() {
+       
+            var showFeature = ldclient.variation("allow-specific-users-access-to-delete-goal");
+            setFeatureFlag(showFeature)
+            console.log("It's now safe to request feature flags", showFeature);
+                if (showFeature) {
+                 console.log("showing feature")
+            } else {
+                console.log("not showing feature")
+             }
+     })
+  }, [])
 
-## Directions for Future Development
+    ```
+    
+ - Feature flag conditional 
+    ```md
+          {featureFlag && <FaTimes
+                  className="deleteIcon"
+                  style={{ color: "red", cursor: "pointer" }}
+                  onClick={() => onDelete(id)}
+                /> }
+    ```
 
-- Have different levels of support and resources based on age.
-- Have an investing tutorial and calculator for young, working adults.
-- Integrate existing financial services into calculations, such as bank accounts, investment accounts, etc.
 
-## Special Thanks
+## Preview of User's View
 
-- Irwin Marcano, bootcamp TA, helped us diagnose external javascript issues in React.
-- Radomir Fugiel, bootcamp TA, helped us understand how to render the budget page chart correctly.
+<img src="/assets/finnmail.png" />
 
 ## License
 

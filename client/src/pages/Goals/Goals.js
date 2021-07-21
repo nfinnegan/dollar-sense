@@ -81,7 +81,7 @@ const Goals = () => {
 
   return (
     <div className="goals">
-
+        <h1>Current User: {auth.currentUser.email}</h1>
       <div>
         {goals && (
           <h1 className="container" id="goalsPageTitle">
