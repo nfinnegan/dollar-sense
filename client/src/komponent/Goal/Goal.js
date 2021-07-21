@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Container } from "react-bootstrap";
 import "./style.css";
 import { FaTimes } from "react-icons/fa";
 import moment from "moment"
+import * as LDClient from "launchdarkly-js-client-sdk";
+import { auth } from "../../Firebase";
 
 const Goals = ({ id, title, emoji, amount, saveBy, onDelete }) => {
-  
+  const [featureFlag, setFeatureFlag] = useState()
+
   const formatDate =  (date) => {
     let convertedDate =  `${new Date(date).getMonth() + 1}/${
       new Date(date).getDate() + 1
@@ -13,6 +16,25 @@ const Goals = ({ id, title, emoji, amount, saveBy, onDelete }) => {
 
     return convertedDate;
   };
+
+  useEffect(() => {
+    var user = {
+      "key": `${auth.currentUser.email}`
+    };
+    const ldclient = LDClient.initialize('60f750d5b1a03d26078523a7', user);
+console.log(user)
+    ldclient.on('ready', function() {
+       
+      var showFeature = ldclient.variation("allow-specific-users-access-to-delete-goal");
+      setFeatureFlag(showFeature)
+      console.log("It's now safe to request feature flags", showFeature);
+      if (showFeature) {
+        console.log("showing feature")
+      } else {
+        console.log("not showing feature")
+      }
+     })
+  }, [])
 
 
   const daysLeftToSave = () => {
@@ -31,11 +53,13 @@ const Goals = ({ id, title, emoji, amount, saveBy, onDelete }) => {
               <h3 className="card-title text-center goalTitle">
                 {" "}
                 {emoji} {title}{" "}
-                <FaTimes
+                <div id="deleteBtn">
+               {featureFlag && <FaTimes
                   className="deleteIcon"
                   style={{ color: "red", cursor: "pointer" }}
                   onClick={() => onDelete(id)}
-                />
+                /> }
+                </div>
               </h3>
               <p className="card-text">
                 <strong>Total to Save:</strong> ${amount}
@@ -54,6 +78,6 @@ const Goals = ({ id, title, emoji, amount, saveBy, onDelete }) => {
       </Container>
     </div>
   );
-};
+}
 
 export default Goals;
